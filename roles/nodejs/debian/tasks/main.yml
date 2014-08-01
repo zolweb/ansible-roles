@@ -20,6 +20,6 @@
 
 - name: npm install
   shell: >
-    curl -sS https://www.npmjs.org/install.sh | sh
+    curl -sS https://www.npmjs.org/install.sh | clean=no sh
     creates=/usr/bin/npm
   sudo: yes
