@@ -1,0 +1,6 @@
+---
+- name: gem
+  shell: >
+      gem install sass
+      creates=/usr/local/bin/sass
+  sudo: yes

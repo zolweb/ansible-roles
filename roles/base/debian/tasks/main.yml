@@ -1,0 +1,11 @@
+---
+- name: install common packages
+  apt: >
+    pkg={{ item }}
+    state=present
+    update_cache=yes
+  with_items:
+    - curl
+    - python-pycurl
+    - python-software-properties
+  sudo: yes

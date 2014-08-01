@@ -1,0 +1,10 @@
+---
+- name: install
+  apt: >
+    pkg={{ item }}
+    state=present
+  with_items:
+    - ruby
+    - ruby-dev
+    - rubygems
+  sudo: yes

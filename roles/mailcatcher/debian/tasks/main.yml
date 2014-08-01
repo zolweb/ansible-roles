@@ -1,0 +1,24 @@
+---
+- name: install dependencies
+  apt: >
+    pkg={{ item }}
+    state=present
+  sudo: yes
+  with_items:
+    - libsqlite3-dev
+
+- name: gem
+  shell: >
+    gem install mailcatcher
+    creates=/usr/local/bin/mailcatcher
+  sudo: yes
+
+- name: add mailcatcher starting command in rc.local
+  lineinfile: >
+    dest=/etc/rc.local
+    insertbefore='^exit'
+    line="/usr/local/bin/mailcatcher --http-ip=0.0.0.0"
+  sudo: yes
+
+- name: starting manually mailcatcher
+  shell: "mailcatcher --http-ip=0.0.0.0 || :"

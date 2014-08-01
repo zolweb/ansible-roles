@@ -1,0 +1,6 @@
+---
+- name: gem
+  shell: >
+      gem install capifony
+      creates=/usr/local/bin/capifony
+  sudo: yes

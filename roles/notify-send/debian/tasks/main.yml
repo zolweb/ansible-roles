@@ -1,0 +1,4 @@
+---
+- name: package
+  apt: pkg=libnotify-bin state=present
+  sudo: yes

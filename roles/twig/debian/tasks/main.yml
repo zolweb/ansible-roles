@@ -1,0 +1,40 @@
+- name: get facts
+  shell: php -m | grep twig
+  register: twig_installed
+  ignore_errors: true
+
+- name: discover pear channel
+  command: pear channel-discover pear.twig-project.org
+  when: twig_installed.rc != 0
+  register: channel_result
+  failed_when: "'already initialized' not in channel_result.stdout and channel_result.rc > 0"
+  sudo: yes
+
+- name: install extension
+  command: pear install twig/CTwig
+  when: twig_installed.rc != 0
+  register: twig_result
+  changed_when: "'installed' not in twig_result.stdout"
+  failed_when: "'already installed' not in twig_result.stdout and twig_result.rc > 0"
+  sudo: yes
+
+- name: add extension to the conf
+  template: >
+    src=twig.ini.j2
+    dest=/etc/php5/mods-available/100-twig.ini
+  sudo: yes
+
+- name: symlink the conf to cli
+  file: >
+    src=/etc/php5/mods-available/100-twig.ini
+    dest=/etc/php5/cli/conf.d/100-twig.ini
+    state=link
+  sudo : yes
+
+- name: symlink the conf to apache
+  file: >
+    src=/etc/php5/mods-available/100-twig.ini
+    dest=/etc/php5/apache2/conf.d/100-twig.ini
+    state=link
+  sudo : yes
+  when: twig_apache

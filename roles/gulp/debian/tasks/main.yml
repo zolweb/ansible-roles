@@ -1,0 +1,4 @@
+---
+- name: npm install
+  npm: name=gulp state=present global=yes
+  sudo: yes

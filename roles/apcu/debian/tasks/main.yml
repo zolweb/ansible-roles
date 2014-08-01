@@ -1,0 +1,23 @@
+---
+- name: get facts
+  shell: php -m | grep apcu
+  register: apcu_installed
+  ignore_errors: true
+
+- name: install extension
+  command: sh -c "yes \"\" | pecl install -f apcu"
+  when: apcu_installed.rc != 0
+  sudo: yes
+
+- name: add extension to the php-cli conf
+  template: >
+    src=apcu.ini.j2
+    dest=/etc/php5/cli/conf.d/100-apcu.ini
+  sudo: yes
+
+- name: add extension to the php-apache conf
+  template: >
+    src=apcu.ini.j2
+    dest=/etc/php5/apache2/conf.d/100-apcu.ini
+  sudo: yes
+  notify: reload apache

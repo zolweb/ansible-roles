@@ -1,0 +1,50 @@
+---
+- name: add debian repo php55
+  apt_repository: >
+    repo='deb http://packages.dotdeb.org wheezy-php55 all'
+    state=present
+  sudo: yes
+  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu'"
+
+- name: add debian source repo php55
+  apt_repository: >
+    repo='deb-src http://packages.dotdeb.org wheezy-php55 all'
+    state=present
+    update_cache=yes
+  sudo: yes
+  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu'"
+
+- name: add key
+  apt_key: url=http://www.dotdeb.org/dotdeb.gpg state=present
+  sudo: yes
+  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu'"
+
+- name: add ubuntu repo
+  apt_repository: repo='ppa:ondrej/php5'
+  sudo: yes
+  when: "ansible_distribution == 'Ubuntu'"
+
+- name: php5 packages
+  apt: >
+    pkg={{ item }}
+    state=present
+    force=yes
+  with_items:
+    - php5-common
+    - php5-cli
+    - php5-dev
+  sudo: yes
+
+- name: php extra packages
+  apt: >
+    pkg={{ item }}
+    state=present
+    force=yes
+  with_items: php_extensions
+  sudo: yes
+
+- name: set config
+  template: >
+    src={{ php_conf_template }}
+    dest=/etc/php5/cli/conf.d/100-conf.ini
+  sudo: yes
