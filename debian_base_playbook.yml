@@ -8,6 +8,7 @@
     twig_apache: true
   roles:
     - base/debian
+    - php/debian # php role must be installed before apache2-mpm-itk because of ondrej repository repository
     - ant/debian
     - apache/debian
     - apcu/debian
@@ -24,7 +25,6 @@
     - notify-send/debian
     - oh-my-zsh/debian
     - pear/debian
-    - php/debian
     - php_cs_fixer/debian
     - phpmyadmin/debian
     - phpunit/debian
