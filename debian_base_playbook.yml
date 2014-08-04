@@ -1,0 +1,34 @@
+---
+- hosts: all
+  vars:
+    mysql_users:
+      - { name: vagrant, password: vagrant }
+    export_vars:
+      - { name: SYMFONY_CACHE_DIR, value: /dev/shm/cache }
+    twig_apache: true
+  roles:
+    - base/debian
+    - ant/debian
+    - apache/debian
+    - apcu/debian
+    - bower/debian
+    - capifony/debian
+    - composer/debian
+    - export_vars/debian
+    - git/debian
+    - gulp/debian
+    - java/debian
+    - mailcatcher/debian
+    - mysql/debian
+    - nodejs/debian
+    - notify-send/debian
+    - oh-my-zsh/debian
+    - pear/debian
+    - php/debian
+    - php_cs_fixer/debian
+    - phpmyadmin/debian
+    - phpunit/debian
+    - ruby/debian
+    - sass/debian
+    - twig/debian
+    - vim/debian
