@@ -6,6 +6,4 @@
     update_cache=yes
   with_items:
     - curl
-    - python-pycurl
-    - python-software-properties
   sudo: yes
