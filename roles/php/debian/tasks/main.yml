@@ -1,10 +1,11 @@
 ---
+# PHP 5.5
 - name: add debian repo php55
   apt_repository: >
     repo='deb http://packages.dotdeb.org wheezy-php55 all'
     state=present
   sudo: yes
-  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu'"
+  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu' and php_version == '5.5'"
 
 - name: add debian source repo php55
   apt_repository: >
@@ -12,18 +13,42 @@
     state=present
     update_cache=yes
   sudo: yes
-  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu'"
+  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu' and php_version == '5.5'"
 
 - name: add key
   apt_key: url=http://www.dotdeb.org/dotdeb.gpg state=present
   sudo: yes
-  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu'"
+  when: "ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu' and php_version == '5.5'"
 
 - name: add ubuntu repo
   apt_repository: repo='ppa:ondrej/php5'
   sudo: yes
-  when: "ansible_distribution == 'Ubuntu'"
+  when: "ansible_distribution == 'Ubuntu' and php_version == '5.5'"
 
+# PHP 5.3
+- name: add debian repo php53
+  apt_repository: >
+    repo='deb http://ftp.debian.org/debian/ squeeze main contrib non-free'
+    state=present
+  sudo: yes
+  when: "php_version == '5.3'"
+
+- name: add debian repo php53
+  apt_repository: >
+    repo='deb http://security.debian.org/ squeeze/updates main contrib non-free'
+    state=present
+  sudo: yes
+  when: "php_version == '5.3'"
+
+
+- name: set php packages pin priority
+  template: >
+    src=preferences-php.j2
+    dest=/etc/apt/preferences.d/preferences-php
+  sudo: yes
+  when: "php_version == '5.3'"
+
+# PHP common install
 - name: php5 packages
   apt: >
     pkg={{ item }}
