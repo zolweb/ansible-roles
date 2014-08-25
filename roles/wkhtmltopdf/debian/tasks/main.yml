@@ -1,0 +1,24 @@
+---
+- name: get facts
+  command: which wkhtmltopdf
+  register: wkhtmltopdf_installed
+  ignore_errors: true
+
+- name: download x86_64
+  get_url: >
+    url=http://downloads.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-wheezy-amd64.deb
+    dest=/tmp/wkhtmltopdf-0.12.1.deb
+    force=no
+  when: wkhtmltopdf_installed.rc != 0
+
+- name: install .deb package
+  shell: dpkg -i /tmp/wkhtmltopdf-0.12.1.deb
+  ignore_errors: true
+  sudo: yes
+  register: wkhtmltopdf_installation
+  when: wkhtmltopdf_installed.rc != 0
+
+- name: install .deb package and dependencies
+  command: apt-get -y -f install
+  sudo: yes
+  when: wkhtmltopdf_installation is defined and wkhtmltopdf_installation.rc != 0
