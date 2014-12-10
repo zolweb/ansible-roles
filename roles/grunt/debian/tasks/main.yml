@@ -1,0 +1,4 @@
+---
+- name: npm install
+  npm: name=grunt-cli state=present global=yes
+  sudo: yes
